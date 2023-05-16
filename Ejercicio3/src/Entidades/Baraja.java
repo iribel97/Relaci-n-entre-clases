@@ -27,12 +27,18 @@ public class Baraja {
     *y un palo (espadas, bastos, oros y copas)
      */
     private void crearBaraja() {
+        cartas( "Espadas");
+        cartas( "Bastos");
+        cartas( "Oros");
+        cartas( "Copas");
+        
+    }
+    
+    private void cartas(String tipo){
         for (int i = 1; i < 13; i++) {
             if (i != 8 && i != 9) {
-                baraja.add(new Carta(i, "Espadas"));
-                baraja.add(new Carta(i, "Bastos"));
-                baraja.add(new Carta(i, "Oros"));
-                baraja.add(new Carta(i, "Copas"));
+                baraja.add(new Carta(i, tipo));
+               
             }
 
         }
