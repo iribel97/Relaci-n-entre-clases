@@ -58,7 +58,7 @@ public class Baraja {
      */
     private void siguienteCarta() {
 
-        if (baraja.size() < 1) {
+        if (baraja.isEmpty()) {
             System.out.println("--------------------------------------------------");
             System.out.println("QUERIDO USUARIO, YA NO HAY MAS CARTAS EN LA BARAJA");
             System.out.println("--------------------------------------------------");

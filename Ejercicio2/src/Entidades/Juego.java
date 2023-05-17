@@ -80,7 +80,7 @@ public class Juego {
                 return p1.getNombreJ().compareTo(p2.getNombreJ());
             }
         };
-        // Ordenar la lista de películas usando el comparador
+        // Ordenar la lista de barajas usando el comparador
         Collections.sort(jugadoresAux, comparadorDuracion);
         System.out.println("------------------------------------------------------------");
         for(Jugador aux : jugadoresAux){

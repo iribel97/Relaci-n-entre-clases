@@ -4,6 +4,9 @@
  */
 package Entidades;
 
+import EnumEntidades.Perrera;
+import java.util.ArrayList;
+
 /**
  *
  * @author irina
@@ -15,17 +18,17 @@ public class Persona {
      */
     private String nombre, apellido;
     private int edad, documento;
-    private Perro perro;
+    private ArrayList<Persona> persons = new ArrayList();
+    private ArrayList<Perrera> perros = new ArrayList();
 
     public Persona() {
     }
 
-    public Persona(String nombre, String apellido, int edad, int documento, Perro perro) {
+    public Persona(String nombre, String apellido, int edad, int documento) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.edad = edad;
         this.documento = documento;
-        this.perro = perro;
     }
 
     public String getNombre() {
@@ -60,30 +63,22 @@ public class Persona {
         this.documento = documento;
     }
 
-    public Perro getPerro() {
-        return perro;
+    public ArrayList<Persona> getPersons() {
+        return persons;
     }
 
-    public void setPerro(Perro perro) {
-        this.perro = perro;
+    public void setPersons(Persona persons) {
+        this.persons.add(persons);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Persona{");
-        sb.append("\n Nombre = ").append(nombre);
-        sb.append("\n Apellido =").append(apellido);
-        sb.append("\n Edad = ").append(edad);
-        sb.append("\n Documento = ").append(documento);
-        sb.append("\n Perro{ ");
-        sb.append("\n    - Nombre: ").append(perro.getNombre());
-        sb.append("\n    - Raza: ").append(perro.getRaza());
-        sb.append("\n    - Edad: ").append(perro.getEdad());
-        sb.append("\n    - Tamaño: ").append(perro.getTamanio());
-        sb.append("\n    }");
-        sb.append('}');
-        return sb.toString();
+    public ArrayList<Perrera> getPerros() {
+        return perros;
     }
+
+    public void setPerros(Perrera perros) {
+        this.perros.add(perros);
+    }
+
+    
 
 }
