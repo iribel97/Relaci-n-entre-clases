@@ -27,9 +27,14 @@ public class Cine {
 
     HashMap<Integer, Sala> rooms = new HashMap();
 
+    private double total = 0;
+
     //POR SI EL USUARIO QUIERE CAMBIAR DE ASIENTO, DEBO DE GUARDAR EL NUMERO DE ASIENTO Y EL NUMERO DE SALA
-     ArrayList<String> salaU = new ArrayList();
+    ArrayList<String> salaU = new ArrayList();
     private int salaSelecU;
+
+    //booleano para cambiar el asiento:
+    private boolean flag;
 
     public void crearSalas() {
         servMovie.addMovie();
@@ -50,9 +55,14 @@ public class Cine {
             System.out.println("|-------------------------------------------------------------------------------------------|");
             System.out.println("|                                      MENU DE OPCIONES                                     |");
             System.out.println("|-------------------------------------------------------------------------------------------|");
-            System.out.println("|    1. COMPRAR VOLETOS                                                                     |");
+            System.out.println("|    1. COMPRAR O DEVOLVER VOLETOS                                                          |");
             System.out.println("|    2. CAMBIAR DATOS                                                                       |");
-            System.out.println("|    3. SALIR                                                                               |");
+            System.out.println("|    3. FACTURA                                                                             |");
+            System.out.println("|    4. SALIR                                                                               |");
+            System.out.println("|-------------------------------------------------------------------------------------------|");
+            if (total != 0) {
+                System.out.println(" MONTO A PAGAR $" + total);
+            }
             System.out.println("|-------------------------------------------------------------------------------------------|");
             System.out.print("   SELECCIONE UNA: ");
             opcU = scaner.nextInt();
@@ -62,8 +72,16 @@ public class Cine {
                     comprar();
                     break;
                 case 2:
+                    cambiarDU();
                     break;
                 case 3:
+                    if (usuario.getCash()>=total) {
+                        factura();
+                    }else{
+                        System.out.println("   SU SALDO ES INSUFICIENTE PARA COMPRAR UN VOLETO.");
+                    }
+                    break;
+                case 4:
                     break;
                 default:
                     System.out.println("OPCION MAL INGRESADA, INTENTELO DE NUEVO");
@@ -88,7 +106,10 @@ public class Cine {
         System.out.println("|-------------------------------------------------------------------------------------------|");
     }
 
+    //SELECCIONA LA SALA Y SUS ASIENTOS
     private void comprar() {
+        int diferencia;
+        String salaElim;
         String selecU;
         if (salaU.isEmpty()) {
             obtener();
@@ -96,21 +117,55 @@ public class Cine {
             System.out.println("YA TIENE ASIENTOS SELECCIONADOS");
             System.out.println("|-------------------------------------------------------------------------------------------|");
             System.out.println("   PELICULA: " + rooms.get(salaSelecU).getMovie().getTitle());
+            System.out.print("   ASIENTOS: ");
+            for (String seatsAux : salaU) {
+                System.out.print(seatsAux);
+                System.out.print("    ");
+            }
+            System.out.println("");
             rooms.get(salaSelecU).mostrar();
             System.out.println("|-------------------------------------------------------------------------------------------|");
-            System.out.print(", QUIERE CONSERVARLOS? (Si/No): ");
+            System.out.print("QUIERE CONSERVARLOS? (Si/No): ");
             selecU = scaner.next().toLowerCase();
             switch (selecU.charAt(0)) {
                 case 'n':
+                    flag = false;
                     for (String aux : salaU) {
                         desocuparAsientos(aux, salaSelecU);
                     }
                     salaU.clear();
                     obtener();
                     break;
+
                 case 's':
-                    System.out.println("");
+                    flag = true;
+                    if (salaU.size() == usuInvitados) {
+
+                        System.out.println("LISTO, SE CONSERVO LOS ASIENTOS :) ");
+
+                    } else if (salaU.size() < usuInvitados) {
+
+                        usuInvitados -= salaU.size();
+                        obtener();
+
+                    } else {
+
+                        usuInvitados = salaU.size() - usuInvitados;
+                        if (usuInvitados == 1) {
+                            System.out.print(" QUE ASIENTO DESEA ELIMINAR: ");
+                            salaElim = scaner.next() + " ";
+                            desocuparAsientos(salaElim, salaSelecU);
+                        } else {
+                            for (int i = 0; i < usuInvitados; i++) {
+                                System.out.print(" INGRESE EL " + (i + 1) + "R ASIENTO A ELIMINAR: ");
+                                salaElim = scaner.next() + " ";
+                                desocuparAsientos(salaElim, salaSelecU);
+                            }
+                        }
+
+                    }
                     break;
+
                 default:
                     System.out.println("RESPUESTA NO IDENTIFICADA");
                     break;
@@ -124,16 +179,24 @@ public class Cine {
         String asientoU, selecU;
 
         System.out.println("|-------------------------------------------------------------------------------------------|");
-        System.out.print("     ELIJA UNA SALA: ");
-        salaSelecU = scaner.nextInt();
+        if (!flag) {
+            do {
+                System.out.print("     ELIJA UNA SALA: ");
+                salaSelecU = scaner.nextInt();
+                if (salaSelecU > servMovie.getMovies().size()) {
+                    System.out.println("SALA NO EXISTE, INTENTELO DE NUEVO");
+                }
+            } while (salaSelecU > servMovie.getMovies().size());
+        }
+
         //PRIMERO COMPRUEBA SI NO ES APTO PARA LA PELI
         if (usuario.getAge() < rooms.get(salaSelecU).getMovie().getAge()) {
             System.out.println("    LO SENTIMOS, EDAD INSUFICIENTE PARA VER LA PELICULA");
         } else {
             //MOSTRAR ASIENTOS
-            
+
             rooms.get(salaSelecU).mostrar();
-            
+
             System.out.println("|-------------------------------------------------------------------------------------------|");
             System.out.print("    DESEA SELECCIONAR ASIENTOS? (Si/No): ");
             selecU = scaner.next().toLowerCase();
@@ -150,7 +213,7 @@ public class Cine {
                             }
                         } while (reservado(asientoU, salaSelecU));
                         ocuparAsientos(asientoU, salaSelecU);
-                        
+
                     }
                 } else {
 
@@ -164,7 +227,7 @@ public class Cine {
                         }
                     } while (reservado(asientoU, salaSelecU));
                     ocuparAsientos(asientoU, salaSelecU);
-                    
+
                 }
             }
 
@@ -197,6 +260,9 @@ public class Cine {
                         if (aux.getValue().getAsientos()[i][j].charAt(0) == seat.charAt(0)
                                 && aux.getValue().getAsientos()[i][j].charAt(1) == seat.charAt(1)) {
                             StringBuilder asientos = new StringBuilder(aux.getValue().getAsientos()[i][j]);
+                            //GUARDAR EL TOTAL
+                            total += aux.getValue().getMovie().getCash();
+
                             salaU.add(seat);
                             asientos.setCharAt(2, 'X'); // Cambiar el carácter a 'X' (o cualquier otro carácter deseado)
                             aux.getValue().getAsientos()[i][j] = asientos.toString();
@@ -219,6 +285,7 @@ public class Cine {
                     for (int j = 0; j < 6; j++) {
                         if (aux.getValue().getAsientos()[i][j].charAt(0) == seat.charAt(0)
                                 && aux.getValue().getAsientos()[i][j].charAt(1) == seat.charAt(1)) {
+                            total -= aux.getValue().getMovie().getCash();
                             StringBuilder asientos = new StringBuilder(aux.getValue().getAsientos()[i][j]);
                             asientos.setCharAt(2, ' '); // Cambiar el carácter a 'X' (o cualquier otro carácter deseado)
                             aux.getValue().getAsientos()[i][j] = asientos.toString();
@@ -230,6 +297,60 @@ public class Cine {
                 }
             }
         }
+    }
+
+    //CAMBIAR DATOS DEL USUARIO
+    private void cambiarDU() {
+        System.out.println("|-------------------------------------------------------------------------------------------|");
+        System.out.println("|    QUE DESEA CAMBIAR:                                                                     |");
+        System.out.println("|       1.- NOMBRE                                                                          |");
+        System.out.println("|       2.- EDAD                                                                            |");
+        System.out.println("|       3.- EFECTIVO                                                                        |");
+        System.out.println("|       4.- NUMERO DE ENTRADAS                                                              |");
+        System.out.println("|-------------------------------------------------------------------------------------------|");
+        System.out.print("   SELECCIONE UNA OPCION: ");
+        int opcU = scaner.nextInt();
+        System.out.println("|-------------------------------------------------------------------------------------------|");
+        switch (opcU) {
+            case 1:
+                System.out.print("      NOMBRE: ");
+                usuario.setName(scaner.nextLine());
+                break;
+            case 2:
+                System.out.print("      EDAD: ");
+                usuario.setAge(scaner.nextInt());
+                break;
+            case 3:
+                System.out.print("      EFECTIVO: ");
+                usuario.setCash(scaner.nextDouble());
+                break;
+            case 4:
+                System.out.print("      NUMERO DE ENTRADAS: ");
+                usuInvitados = scaner.nextInt();
+                break;
+            default:
+                System.out.println("    OPCION NO ENCONTRADA, INTENTELO DE NUEVO");
+        }
+    }
+
+    //FACTURA ------------------------------------------------------------------
+    private void factura() {
+        System.out.println("|-------------------------------------------------------------------------------------------|");
+        System.out.println("|                                   FACTURA #001 001 4563                                   |");
+        System.out.println("|-------------------------------------------------------------------------------------------|");
+        System.out.println("        CLIENTE: " + usuario.getName());
+        System.out.println("        PELICULA: " + rooms.get(salaSelecU).getMovie().getTitle());
+        System.out.print("        ASIENTOS: ");
+        for (String seatsAux : salaU) {
+            System.out.print(seatsAux);
+            System.out.print("    ");
+        }
+        System.out.println("");
+        System.out.println("        TOTAL A PAGAR: $" + total);
+        System.out.println("|-------------------------------------------------------------------------------------------|");
+        System.out.println("        CAMBIO: $" + (usuario.getCash()-total));
+        System.out.println("|-------------------------------------------------------------------------------------------|");
+        
     }
 
     //MOSTRAR LA TABLA DE PELICULAS --------------------------------------------
