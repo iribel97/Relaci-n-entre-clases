@@ -12,7 +12,7 @@ public enum Perrera {
     Nala("Mini French", "Pequeño", 2), 
     Mia("ShisTzu", "Pequeña", 1),
     Hachi("Shiba Inu", "Grande", 10),
-    Zeus("Husky Siberianp", "Grande", 5);
+    Zeus("Husky Siberiano", "Grande", 5);
     
     private String raza, tamanio;
     int edad;

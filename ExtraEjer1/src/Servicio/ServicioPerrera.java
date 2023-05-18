@@ -19,7 +19,7 @@ public class ServicioPerrera {
     Persona per = new Persona();
 
     private void crearPersonas() {
-        Persona person =new Persona();
+        Persona person = new Persona();
         System.out.print("NOMBRE: ");
         person.setNombre(scaner.next());
         System.out.print("APELLIDO: ");
@@ -138,13 +138,13 @@ public class ServicioPerrera {
     private boolean verificarMascota(String nombreMascota) {
 
         for (Persona aux : per.getPersons()) {
-            if (!aux.getPerros().isEmpty()) {
+//            if (!aux.getPerros().isEmpty()) {
                 for (Perrera aux1 : aux.getPerros()) {
                     if (aux1.name().equalsIgnoreCase(nombreMascota)) {
                         return true;
                     }
                 }
-            }
+//            }
         }
         return false;
     }
