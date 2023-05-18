@@ -9,17 +9,16 @@ package Entidades;
  * @author irina
  */
 public class Sala {
+
     Pelicula movie = new Pelicula();
     private String asientos[][] = new String[8][6];
     private int cont = 8;
-
-    
 
     public Sala(Pelicula movie) {
         this.movie = movie;
         this.asientos = crearSala();
     }
-    
+
     public String[][] getAsientos() {
         return asientos;
     }
@@ -35,8 +34,8 @@ public class Sala {
     public void setMovie(Pelicula movie) {
         this.movie = movie;
     }
-    
-    public String[][] crearSala(){
+
+    public String[][] crearSala() {
         String asientos2[][] = new String[8][6];
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 6; j++) {
@@ -59,15 +58,18 @@ public class Sala {
                     case 5:
                         asientos2[i][j] = (cont) + "F ";
                         break;
-                  
-                    
+
                 }
             }
             cont--;
         }
         return asientos2;
     }
-    public void mostrar(){
+
+    public void mostrar() {
+        System.out.println("|***********************|");
+        System.out.println("|        PANTALLA       |");
+        System.out.println("|***********************|");
         for (int i = 0; i < 8; i++) {
             System.out.print("|");
             for (int j = 0; j < 6; j++) {
@@ -76,5 +78,7 @@ public class Sala {
             }
             System.out.println("");
         }
+        System.out.println("|***********************|");
+        System.out.println(" 'X' -> Ocupados, ' '-> Disponibles");
     }
 }
