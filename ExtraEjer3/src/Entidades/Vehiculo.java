@@ -14,17 +14,18 @@ public class Vehiculo {
     *       modelo, año, número de motor, chasis, color, tipo (camioneta, sedán, etc.).
     */
     private String marca, modelo, color, chasis;
-    private String[] tipo = {"camioneta", "sedan", "moto", "lamborgini", "cuadron"};
+    private String tipo;
     private int year, numMotor;
 
     public Vehiculo() {
     }
 
-    public Vehiculo(String marca, String modelo, String color, String chasis, int year, int numMotor) {
+    public Vehiculo(String marca, String modelo, String color, String chasis, String tipo, int year, int numMotor) {
         this.marca = marca;
         this.modelo = modelo;
         this.color = color;
         this.chasis = chasis;
+        this.tipo = tipo;
         this.year = year;
         this.numMotor = numMotor;
     }
@@ -61,11 +62,11 @@ public class Vehiculo {
         this.chasis = chasis;
     }
 
-    public String[] getTipo() {
+    public String getTipo() {
         return tipo;
     }
 
-    public void setTipo(String[] tipo) {
+    public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 
@@ -84,6 +85,6 @@ public class Vehiculo {
     public void setNumMotor(int numMotor) {
         this.numMotor = numMotor;
     }
-    
+
     
 }

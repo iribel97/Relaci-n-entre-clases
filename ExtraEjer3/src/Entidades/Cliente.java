@@ -15,13 +15,13 @@ public class Cliente {
     *       domicilio, teléfono.
     */
     
-    private String nombre, apellido, mail, domicilio;
-    private int id, telef;
+    private String nombre, apellido, mail, domicilio, telef, id;
+    
 
     public Cliente() {
     }
 
-    public Cliente(String nombre, String apellido, String mail, String domicilio, int id, int telef) {
+    public Cliente(String nombre, String apellido, String mail, String domicilio, String id, String telef) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.mail = mail;
@@ -62,19 +62,19 @@ public class Cliente {
         this.domicilio = domicilio;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getTelef() {
+    public String getTelef() {
         return telef;
     }
 
-    public void setTelef(int telef) {
+    public void setTelef(String telef) {
         this.telef = telef;
     }
     
